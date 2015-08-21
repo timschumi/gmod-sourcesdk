@@ -6,7 +6,7 @@ local libLocations = {
 
 local osDefinition = {
 	windows	= { "WIN32" },
-	macosx	= { "POSIX", "_POSIX", "LINUX", "_LINUX", "GNUC", "OSX" },
+	macosx	= { "POSIX", "_POSIX", "GNUC", "OSX" },
 	linux	= { "POSIX", "_POSIX", "LINUX", "_LINUX", "GNUC" }
 }
 
