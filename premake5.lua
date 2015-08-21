@@ -6,8 +6,8 @@ local libLocations = {
 
 local osDefinition = {
 	windows	= { "WIN32" },
-	macosx	= { "POSIX", "LINUX", "OSX" },
-	linux	= { "POSIX", "LINUX" }
+	macosx	= { "POSIX", "LINUX", "GNUC", "OSX" },
+	linux	= { "POSIX", "LINUX", "GNUC" }
 }
 
 libdirs(libLocations[os.get()])
