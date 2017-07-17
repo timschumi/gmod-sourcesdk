@@ -48,13 +48,14 @@ files {
 	"../src/tier1/utlsymbol.cpp"
 }
 
-if os.is "windows" then
+filter "system:windows"
 	links { "Ws2_32", "Rpcrt4" }
 	files "../src/tier1/processor_detect.cpp"
-else
+filter "system:linux"
+	buildoptions "-std=gnu++11"
+filter "system:not windows"
 	files {
 		"../src/tier1/processor_detect_linux.cpp",
-		"../src/tier1/qsort_s.cpp",
-		"../src/tier1/pathmatch.cpp"
+		"../src/tier1/qsort_s.cpp"
 	}
-end
+filter {}

@@ -5,9 +5,9 @@ local libLocations = {
 }
 
 local osDefinition = {
-	windows	= { "WIN32" },
-	macosx	= { "POSIX", "_POSIX", "GNUC", "OSX" },
-	linux	= { "POSIX", "_POSIX", "LINUX", "_LINUX", "GNUC" }
+	windows	= { "WIN32", "_DLL_EXT=dll" },
+	macosx	= { "POSIX", "_POSIX", "GNUC", "OSX", "_DLL_EXT=dylib", "NO_MALLOC_OVERRIDE" },
+	linux	= { "POSIX", "_POSIX", "LINUX", "_LINUX", "GNUC", "_DLL_EXT=so", "NO_MALLOC_OVERRIDE" }
 }
 
 libdirs(libLocations[os.get()])
