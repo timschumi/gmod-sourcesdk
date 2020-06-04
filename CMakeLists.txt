@@ -62,7 +62,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	target_compile_options(sdk-tier1 INTERFRACE "-std=gnu++11")
+	target_compile_features(sdk-tier1 INTERFACE cxx_std_11)
 endif()
 
 
