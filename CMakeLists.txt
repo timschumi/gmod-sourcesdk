@@ -23,7 +23,7 @@ endif()
 
 # Prepare list of tier1 sources
 set(SOURCESDK_TIER1 "bitbuf" "byteswap" "characterset" "checksum_crc" "checksum_md5" "checksum_sha1" "commandbuffer" "convar"
-                    "datamanger" "diff" "generichash" "ilocalize" "interface" "KeyValues" "kvpacker" "lzmaDecoder" "mempool"
+                    "datamanager" "diff" "generichash" "ilocalize" "interface" "KeyValues" "kvpacker" "lzmaDecoder" "mempool"
                     "memstack" "NetAdr" "newbitbuf" "rangecheckedvar" "reliabletimer" "snappy-sinksource" "snappy-stubs-internal"
                     "snappy" "sparsematrix" "splitstring" "stringpool" "strtools" "tier1" "tokenreader" "uniqueid" "utlbinaryblock"
                     "utlbuffer" "utlstring" "utlsymbol")
