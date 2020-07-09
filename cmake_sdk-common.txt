@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.12)
+
+add_library(sdk-common INTERFACE)
+
+target_compile_definitions(sdk-common INTERFACE
+	${SOURCESDK_DEFINES}
+	"RAD_TELEMETRY_DISABLED"
+	"GMOD_USE_SOURCESDK"
+)
+target_include_directories(sdk-common SYSTEM INTERFACE
+	"${CMAKE_CURRENT_SOURCE_DIR}/common"
+	"${CMAKE_CURRENT_SOURCE_DIR}/game/shared"
+	"${CMAKE_CURRENT_SOURCE_DIR}/public"
+)
+
+target_sources(sdk-common INTERFACE
+	"${CMAKE_CURRENT_SOURCE_DIR}/interfaces/interfaces.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/public/interfaces/interfaces.h"
+)
+
+if(DEFINED SOURCESDK_SERVERSIDE)
+	target_include_directories(sdk-common SYSTEM INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/server")
+	target_compile_definitions(sdk-common INTERFACE "GAME_DLL")
+else()
+	target_include_directories(sdk-common SYSTEM INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/client")
+	target_compile_definitions(sdk-common INTERFACE "CLIENT_DLL")
+endif()
+
