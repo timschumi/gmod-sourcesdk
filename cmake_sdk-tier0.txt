@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.12)
+
+add_library(sdk-tier0 INTERFACE)
+target_include_directories(sdk-tier0 SYSTEM INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/public/tier0")
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} MATCHES "x64" AND NOT DEFINED SOURCESDK_SERVERSIDE)
+	target_link_libraries(sdk-tier0 INTERFACE "tier0_client")
+else()
+	target_link_libraries(sdk-tier0 INTERFACE "tier0")
+endif()
+

@@ -96,7 +96,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif()
 
 include("cmake_sdk-common.txt")
-# TODO: include("tier0")
+include("cmake_sdk-tier0.txt")
 # TODO: include("tier1")
 # TODO: include("tier2")
 # TODO: include("tier3")
