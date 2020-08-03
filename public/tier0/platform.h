@@ -522,7 +522,9 @@ typedef signed char					int8;
 		typedef int					intp;
 		typedef unsigned int		uintp;
 	#endif
-	typedef void *HWND;
+	#ifndef PLATFORM_WINDOWS
+		typedef void *HWND;
+	#endif
 
     // [u]int64 are actually defined as 'long long' and gcc 64-bit
     // doesn't automatically consider them the same as 'long int'.
@@ -904,6 +906,15 @@ typedef void * HINSTANCE;
 	#define DLL_GLOBAL_EXPORT		DLL_DECLARATION_DEFAULT_VISIBILITY 
 	#define DLL_GLOBAL_IMPORT		extern
 
+	#ifdef PLATFORM_WINDOWS
+		#define DLL_EXPORT				extern "C" __declspec( dllexport )
+		#define DLL_IMPORT				extern "C" __declspec( dllimport )
+		#define DLL_CLASS_EXPORT			__declspec( dllexport )
+		#define DLL_CLASS_IMPORT			__declspec( dllimport )
+		#define DLL_GLOBAL_EXPORT			extern __declspec( dllexport )
+		#define DLL_GLOBAL_IMPORT			extern __declspec( dllimport )
+	#endif
+
 	#define HINT(THE_HINT)			__builtin_expect( THE_HINT, 1 )
 	#define DECL_ALIGN(x)			__attribute__( ( aligned( x ) ) )
 	#define CONSTRUCT_EARLY			__attribute__((init_priority(101)))
@@ -1148,7 +1159,7 @@ typedef void * HINSTANCE;
 		#endif
 	#elif defined( OSX )
 		#define DebuggerBreak()  if ( Plat_IsInDebugSession() ) asm( "int3" ); else { raise(SIGTRAP); }
-	#elif defined( PLATFORM_CYGWIN ) || defined( PLATFORM_POSIX )
+	#elif defined( PLATFORM_CYGWIN ) || defined( PLATFORM_POSIX ) || defined( PLATFORM_WINDOWS )
 		#define DebuggerBreak()		__asm__( "int $0x3;")
 	#else
 		#define DebuggerBreak()	raise(SIGTRAP)
@@ -1827,9 +1838,9 @@ inline uint64 Plat_Rdtsc()
 {
 #if defined( _X360 )
 	return ( uint64 )__mftb32();
-#elif defined( _WIN64 )
+#elif defined( COMPILER_MSVC64 )
 	return ( uint64 )__rdtsc();
-#elif defined( _WIN32 )
+#elif defined( COMPILER_MSVC32 )
 #if defined( _MSC_VER ) && ( _MSC_VER >= 1400 )
 	return ( uint64 )__rdtsc();
 #else

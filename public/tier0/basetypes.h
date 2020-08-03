@@ -389,12 +389,6 @@ typedef uint8 byte;
 typedef uint16 word;
 #endif
 
-#if defined( _WIN32 ) || defined( _PS3 )
-typedef wchar_t ucs2; // under windows & PS3 wchar_t is ucs2
-#else
-typedef unsigned short ucs2;
-#endif
-
 enum ThreeState_t
 {
 	TRS_FALSE,
@@ -454,8 +448,10 @@ inline bool IsFinite( const vec_t &f )
 
 #if defined( WIN32 )
 
-//#include <math.h>
+#ifdef COMPILER_GCC
+#include <math.h>
 // Just use prototype from math.h
+#else
 #ifdef __cplusplus
 extern "C" 
 {
@@ -465,6 +461,7 @@ extern "C"
 	float __cdecl fabsf( _In_ float );
 #ifdef __cplusplus
 }
+#endif
 #endif
 
 // In win32 try to use the intrinsic fabs so the optimizer can do it's thing inline in the code

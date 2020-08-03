@@ -23,7 +23,7 @@
 #define THREAD_PRIORITY_HIGHEST 2
 #endif
 
-#if !defined( _X360 ) && !defined( _PS3 ) && defined(COMPILER_MSVC)
+#if !defined( _X360 ) && !defined( _PS3 ) && defined(PLATFORM_WINDOWS)
 // For _ReadWriteBarrier()
 #include <intrin.h>
 #endif
@@ -731,7 +731,7 @@ public:
 										if ( sizeof(T) == sizeof(int32) ) 
 											return (T)ThreadInterlockedIncrement( (int32 *)&m_value );
 										else
-											return (T)ThreadInterlockedIncrement64( (int64 *)&m_value );
+											return (T)this->ThreadInterlockedIncrement64( (int64 *)&m_value );
 	}
 	T operator++(int)				{ return operator++() - 1; }
 
@@ -739,7 +739,7 @@ public:
 										if ( sizeof(T) == sizeof(int32) )
 											return (T)ThreadInterlockedDecrement( (int32 *)&m_value );
 										else
-											return (T)ThreadInterlockedDecrement64( (int64 *)&m_value );
+											return (T)this->ThreadInterlockedDecrement64( (int64 *)&m_value );
 									}
 
 	T operator--(int)				{ return operator--() + 1; }
@@ -766,7 +766,7 @@ public:
 										if ( sizeof(T) == sizeof(int32) )
 											return (T)ThreadInterlockedExchangeAdd( (int32 *)&m_value, (int32)add );
 										else
-											return (T)ThreadInterlockedExchangeAdd64( (int64 *)&m_value, (int64)add );
+											return (T)this->ThreadInterlockedExchangeAdd64( (int64 *)&m_value, (int64)add );
 									}
 
 
@@ -774,7 +774,7 @@ public:
 										if ( sizeof(T) == sizeof(int32) )
 											ThreadInterlockedExchangeAdd( (int32 *)&m_value, (int32)add );
 										else
-											ThreadInterlockedExchangeAdd64( (int64 *)&m_value, (int64)add );
+											this->ThreadInterlockedExchangeAdd64( (int64 *)&m_value, (int64)add );
 									}
 
 	void operator-=( T subtract )	{ operator+=( -subtract ); }
@@ -846,21 +846,21 @@ public:
 	bool operator==( T *rhs ) const	{ return ( m_value == rhs ); }
 	bool operator!=( T *rhs ) const	{ return ( m_value != rhs ); }
 
-	T *operator++()					{ return ((T *)_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, sizeof(T) )) + 1; }
-	T *operator++(int)				{ return (T *)_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, sizeof(T) ); }
+	T *operator++()					{ return ((T *)this->_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, sizeof(T) )) + 1; }
+	T *operator++(int)				{ return (T *)this->_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, sizeof(T) ); }
 
-	T *operator--()					{ return ((T *)_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, -sizeof(T) )) - 1; }
-	T *operator--(int)				{ return (T *)_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, -sizeof(T) ); }
+	T *operator--()					{ return ((T *)this->_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, -sizeof(T) )) - 1; }
+	T *operator--(int)				{ return (T *)this->_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, -sizeof(T) ); }
 
 	bool AssignIf( T *conditionValue, T *newValue )	{ return _InterlockedCompareExchangePointer( (void * volatile *)&m_value, newValue, conditionValue ) == conditionValue; }
 
 	T *operator=( T *newValue )		{ _InterlockedExchangePointer( (void * volatile *) &m_value, newValue ); return newValue; }
 
-	void operator+=( int add )		{ _InterlockedExchangeAdd64( (volatile __int64 *)&m_value, add * sizeof(T) ); }
+	void operator+=( int add )		{ this->_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, add * sizeof(T) ); }
 	void operator-=( int subtract )	{ operator+=( -subtract ); }
 
 	// Atomic add is like += except it returns the previous value as its return value
-	T *AtomicAdd( int add ) { return ( T * )_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, add * sizeof(T) ); }
+	T *AtomicAdd( int add ) { return ( T * )this->_InterlockedExchangeAdd64( (volatile __int64 *)&m_value, add * sizeof(T) ); }
 
 	T *operator+( int rhs ) const		{ return m_value + rhs; }
 	T *operator-( int rhs ) const		{ return m_value - rhs; }
